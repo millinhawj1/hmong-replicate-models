@@ -88,7 +88,7 @@ class Predictor(BasePredictor):
         voice: str = Input(
             description="Speaker voice",
             default="Kim_tshaj",
-            choices=sorted(VOICES.keys()),
+            choices=["Kaj_Siab","Kim_tshaj","Ntshiab_Li","hmong_green_female","hmong_green_male","hmong_white_female","hmong_white_male","txeej_txaim","vaj"],
         ),
         speed: float = Input(
             description="Speaking speed (0.5–2.0)", default=1.0, ge=0.5, le=2.0

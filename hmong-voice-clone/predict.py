@@ -2,7 +2,7 @@ import os, sys, uuid, tempfile
 import numpy as np
 import torch
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath
+from cog import BasePredictor, Input, Path as CogPath, Secret
 from pathlib import Path as SysPath
 
 SEED_VC_DIR = "/workspace/seed-vc"
