@@ -16,27 +16,59 @@ COSY_DIR     = COSY_APP / "CosyVoice"
 REF_AUDIO    = COSY_APP / "ref_audio"
 
 # Mirror of VOICE_CATALOG in api.py
-# 4 voices from Pakorn: 2 male (Dawb + Leeg), 2 female (Dawb + Leeg)
+# 9 native Hmong voices — 5 Dawb, 4 Leeg
+DAWB = "You are a helpful assistant. Please speak Hmong (White Hmong RPA).<|endofprompt|>"
+LEEG = "You are a helpful assistant. Please speak Hmong (Green Hmong RPA).<|endofprompt|>"
+
 VOICES = {
+    # ── Pakorn voices (Dawb) ─────────────────────────────────────────────
     "Kim_tshaj": {
         "name":    "Kim Tshaj (Male · Dawb)",
         "ref":     str(REF_AUDIO / "Kim_tshaj.mp3"),
-        "instruct":"You are a helpful assistant. Please speak Hmong (White Hmong RPA).<|endofprompt|>",
-    },
-    "txeej_txaim": {
-        "name":    "Txeej Txaim (Male · Leeg)",
-        "ref":     str(REF_AUDIO / "txeej_txaim.mp3"),
-        "instruct":"You are a helpful assistant. Please speak Hmong (Green Hmong RPA).<|endofprompt|>",
+        "instruct": DAWB,
     },
     "Ntshiab_Li": {
         "name":    "Ntshiab Li (Female · Dawb)",
         "ref":     str(REF_AUDIO / "Ntshiab_Li.mp3"),
-        "instruct":"You are a helpful assistant. Please speak Hmong (White Hmong RPA).<|endofprompt|>",
+        "instruct": DAWB,
+    },
+    # ── Pakorn voices (Leeg) ─────────────────────────────────────────────
+    "txeej_txaim": {
+        "name":    "Txeej Txaim (Male · Leeg)",
+        "ref":     str(REF_AUDIO / "txeej_txaim.mp3"),
+        "instruct": LEEG,
     },
     "Kaj_Siab": {
         "name":    "Kaj Siab (Female · Leeg)",
         "ref":     str(REF_AUDIO / "Kaj_Siab.mp3"),
-        "instruct":"You are a helpful assistant. Please speak Hmong (Green Hmong RPA).<|endofprompt|>",
+        "instruct": LEEG,
+    },
+    # ── Bundled Dawb voices ──────────────────────────────────────────────
+    "hmong_white_male": {
+        "name":    "Hmong White Male (Dawb)",
+        "ref":     str(REF_AUDIO / "hmong_wite_male.mp3"),
+        "instruct": DAWB,
+    },
+    "hmong_white_female": {
+        "name":    "Hmong White Female (Dawb)",
+        "ref":     str(REF_AUDIO / "hmong_wite_Female.mp3"),
+        "instruct": DAWB,
+    },
+    "vaj": {
+        "name":    "Vaj (Male · Dawb)",
+        "ref":     str(REF_AUDIO / "vaj.mp3"),
+        "instruct": DAWB,
+    },
+    # ── Bundled Leeg voices ──────────────────────────────────────────────
+    "hmong_green_male": {
+        "name":    "Hmong Green Male (Leeg)",
+        "ref":     str(REF_AUDIO / "hmong_green_male.mp3"),
+        "instruct": LEEG,
+    },
+    "hmong_green_female": {
+        "name":    "Hmong Green Female (Leeg)",
+        "ref":     str(REF_AUDIO / "hmong_green_Female.mp3"),
+        "instruct": LEEG,
     },
 }
 
@@ -56,7 +88,7 @@ class Predictor(BasePredictor):
         voice: str = Input(
             description="Speaker voice",
             default="Kim_tshaj",
-            choices=list(VOICES.keys()),
+            choices=sorted(VOICES.keys()),
         ),
         speed: float = Input(
             description="Speaking speed (0.5–2.0)", default=1.0, ge=0.5, le=2.0
