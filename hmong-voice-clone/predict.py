@@ -2,7 +2,7 @@ import os, sys, uuid, tempfile
 import numpy as np
 import torch
 import soundfile as sf
-from cog import BasePredictor, Input
+from cog import BaseModel, Input
 from pathlib import Path, Secret
 from pathlib import Path as SysPath
 
@@ -14,7 +14,7 @@ DEV = torch.device("cuda")
 DT  = torch.float16
 
 
-class Predictor(BasePredictor):
+class Predictor(BaseModel):
     def setup(self):
         from hydra.utils import instantiate
         from omegaconf import DictConfig
@@ -28,7 +28,7 @@ class Predictor(BasePredictor):
         self.vc.setup_ar_caches(max_batch_size=1, max_seq_len=4096, dtype=DT, device=DEV)
         print("Seed-VC loaded ✓", flush=True)
 
-    def run(
+    def predict(
         self,
         source_audio: Path = Input(
             description="Audio to convert — the speech you want cloned into the target voice (wav/mp3)"

@@ -7,7 +7,7 @@ if str(COSY_APP) not in sys.path:
     sys.path.insert(0, str(COSY_APP))
 
 import soundfile as sf
-from cog import BasePredictor, Input
+from cog import BaseModel, Input
 from pathlib import Path, Secret
 from tts_core import CosyVoiceEngine
 
@@ -41,7 +41,7 @@ VOICES = {
 }
 
 
-class Predictor(BasePredictor):
+class Predictor(BaseModel):
     def setup(self):
         self.engine = CosyVoiceEngine(
             model_dir=MODEL_DIR,
@@ -50,7 +50,7 @@ class Predictor(BasePredictor):
         )
         print("CosyVoice loaded ✓", flush=True)
 
-    def run(
+    def predict(
         self,
         image: Path = Input(description="Portrait photo (jpg/png) — face must be clearly visible"),
         text: str = Input(description="Hmong text to speak"),

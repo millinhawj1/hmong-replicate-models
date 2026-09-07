@@ -1,7 +1,7 @@
 import os, sys, tempfile
 import numpy as np
 import soundfile as sf
-from cog import BasePredictor, Input
+from cog import BaseModel, Input
 from pathlib import Path
 
 # CosyVoice app
@@ -31,7 +31,7 @@ VOICES = {
 }
 
 
-class Predictor(BasePredictor):
+class Predictor(BaseModel):
     def setup(self):
         import ctranslate2
         from faster_whisper import WhisperModel
@@ -48,7 +48,7 @@ class Predictor(BasePredictor):
         )
         print("Hmong STS ready ✓ (STT + TTS)", flush=True)
 
-    def run(
+    def predict(
         self,
         audio: Path = Input(description="Hmong speech audio to convert (wav/mp3)"),
         target_voice: str = Input(
