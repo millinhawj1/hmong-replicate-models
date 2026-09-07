@@ -1,7 +1,8 @@
 import os, base64, tempfile
 import numpy as np
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath
+from cog import BasePredictor, Input
+from pathlib import Path
 
 MODEL_DIR = "/workspace/hmong_ears_pakorn"
 CT2_DIR   = "/workspace/pakorn-ct2"
@@ -38,7 +39,7 @@ class Predictor(BasePredictor):
         self.model = WhisperModel(CT2_DIR, device=device, compute_type=compute)
         print(f"Hmong STT ready on {device} ✓", flush=True)
 
-    def predict(
+    def run(
         self,
         audio: CogPath = Input(description="Hmong audio to transcribe (wav/mp3/m4a)"),
         dialect: str = Input(

@@ -8,7 +8,8 @@ if str(COSY_APP) not in sys.path:
 
 import numpy as np
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath
+from cog import BasePredictor, Input
+from pathlib import Path
 from tts_core import CosyVoiceEngine
 
 MODEL_DIR    = COSY_APP / "Fun-CosyVoice3-0.5B-hmong"
@@ -82,7 +83,7 @@ class Predictor(BasePredictor):
         )
         print("CosyVoice loaded ✓", flush=True)
 
-    def predict(
+    def run(
         self,
         text: str = Input(description="Hmong text to synthesize"),
         voice: str = Input(
@@ -97,7 +98,7 @@ class Predictor(BasePredictor):
             description="Random seed for reproducibility (-1 = random)",
             default=0, ge=-1, le=2_147_483_647,
         ),
-    ) -> CogPath:
+    ) -> Path:
         text = text.strip()
         if not text:
             raise ValueError("text is required")
@@ -115,6 +116,6 @@ class Predictor(BasePredictor):
             seed=seed,
         )
 
-        out = CogPath(tempfile.mktemp(suffix=".wav"))
+        out = Path(tempfile.mktemp(suffix=".wav"))
         sf.write(str(out), wav, sample_rate, subtype="PCM_16")
         return out

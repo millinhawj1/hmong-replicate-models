@@ -7,7 +7,8 @@ Pipeline: Audio → STT (Whisper Hmong) → LLM (respond in Hmong) → TTS (Cosy
 import os, sys, tempfile
 import numpy as np
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath, Secret
+from cog import BasePredictor, Input
+from pathlib import Path, Secret
 
 COSY_APP = "/workspace/cosyvoice_app/app"
 if COSY_APP not in sys.path:
@@ -53,7 +54,7 @@ class Predictor(BasePredictor):
         )
         print("Hmong Pipecat ready ✓ (STT + LLM + TTS)", flush=True)
 
-    def predict(
+    def run(
         self,
         audio: CogPath = Input(description="User's spoken Hmong audio (wav/mp3)"),
         voice: str = Input(
@@ -69,7 +70,7 @@ class Predictor(BasePredictor):
             default="[]",
         ),
         speed: float = Input(default=1.0, ge=0.5, le=2.0),
-    ) -> CogPath:
+    ) -> Path:
         import json
         import openai
 
@@ -119,6 +120,6 @@ class Predictor(BasePredictor):
             instruct_text=spec["instruct"], text_frontend=False, speed=speed,
         )
 
-        out = CogPath(tempfile.mktemp(suffix=".wav"))
+        out = Path(tempfile.mktemp(suffix=".wav"))
         sf.write(str(out), wav, sr_out, subtype="PCM_16")
         return out

@@ -2,7 +2,8 @@ import os, sys, uuid, tempfile
 import numpy as np
 import torch
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath, Secret
+from cog import BasePredictor, Input
+from pathlib import Path, Secret
 from pathlib import Path as SysPath
 
 SEED_VC_DIR = "/workspace/seed-vc"
@@ -27,7 +28,7 @@ class Predictor(BasePredictor):
         self.vc.setup_ar_caches(max_batch_size=1, max_seq_len=4096, dtype=DT, device=DEV)
         print("Seed-VC loaded ✓", flush=True)
 
-    def predict(
+    def run(
         self,
         source_audio: CogPath = Input(
             description="Audio to convert — the speech you want cloned into the target voice (wav/mp3)"
@@ -43,7 +44,7 @@ class Predictor(BasePredictor):
             description="Output length relative to source — 1.0 = same length",
             default=1.0, ge=0.5, le=2.0,
         ),
-    ) -> CogPath:
+    ) -> Path:
         r = self.vc.convert_voice_with_streaming(
             str(source_audio),
             str(reference_audio),
@@ -61,6 +62,6 @@ class Predictor(BasePredictor):
             r = r[-1]
 
         wav = np.asarray(r)
-        out = CogPath(tempfile.mktemp(suffix=".wav"))
+        out = Path(tempfile.mktemp(suffix=".wav"))
         sf.write(str(out), wav, self.vc.sr)
         return out

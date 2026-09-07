@@ -1,7 +1,8 @@
 import os, sys, tempfile
 import numpy as np
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath
+from cog import BasePredictor, Input
+from pathlib import Path
 
 # CosyVoice app
 COSY_APP = "/workspace/cosyvoice_app/app"
@@ -47,7 +48,7 @@ class Predictor(BasePredictor):
         )
         print("Hmong STS ready ✓ (STT + TTS)", flush=True)
 
-    def predict(
+    def run(
         self,
         audio: CogPath = Input(description="Hmong speech audio to convert (wav/mp3)"),
         target_voice: str = Input(
@@ -58,7 +59,7 @@ class Predictor(BasePredictor):
                      "txeej_txaim", "vaj"],
         ),
         speed: float = Input(default=1.0, ge=0.5, le=2.0),
-    ) -> CogPath:
+    ) -> Path:
         # Step 1 — STT: transcribe source audio
         data, sr = sf.read(str(audio), dtype="float32")
         if data.ndim > 1:
@@ -90,6 +91,6 @@ class Predictor(BasePredictor):
             instruct_text=spec["instruct"], text_frontend=False, speed=speed,
         )
 
-        out = CogPath(tempfile.mktemp(suffix=".wav"))
+        out = Path(tempfile.mktemp(suffix=".wav"))
         sf.write(str(out), wav, sr_out, subtype="PCM_16")
         return out

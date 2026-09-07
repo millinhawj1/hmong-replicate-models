@@ -7,7 +7,8 @@ if str(COSY_APP) not in sys.path:
     sys.path.insert(0, str(COSY_APP))
 
 import soundfile as sf
-from cog import BasePredictor, Input, Path as CogPath, Secret
+from cog import BasePredictor, Input
+from pathlib import Path, Secret
 from tts_core import CosyVoiceEngine
 
 MODEL_DIR = COSY_APP / "Fun-CosyVoice3-0.5B-hmong"
@@ -48,7 +49,7 @@ class Predictor(BasePredictor):
         )
         print("CosyVoice loaded ✓", flush=True)
 
-    def predict(
+    def run(
         self,
         image: CogPath = Input(description="Portrait photo (jpg/png) — face must be clearly visible"),
         text: str = Input(description="Hmong lyrics or text to sing/speak"),
@@ -73,7 +74,7 @@ class Predictor(BasePredictor):
             description="Expression intensity — lower = smoother, more natural (0.1–2.0)",
             default=0.7, ge=0.1, le=2.0,
         ),
-    ) -> CogPath:
+    ) -> Path:
         text = text.strip()
         if not text:
             raise ValueError("text is required")
@@ -119,6 +120,6 @@ class Predictor(BasePredictor):
         if not mp4s:
             raise RuntimeError("SadTalker did not produce a video")
 
-        out = CogPath(tempfile.mktemp(suffix=".mp4"))
+        out = Path(tempfile.mktemp(suffix=".mp4"))
         SysPath(out).write_bytes(mp4s[0].read_bytes())
         return out
