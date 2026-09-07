@@ -7,7 +7,7 @@ Pipeline: Audio → STT (Whisper Hmong) → LLM (respond in Hmong) → TTS (Cosy
 import os, sys, tempfile
 import numpy as np
 import soundfile as sf
-from cog import BaseModel, Input
+from cog import BasePredictor, Input
 from pathlib import Path, Secret
 
 COSY_APP = "/workspace/cosyvoice_app/app"
@@ -39,7 +39,7 @@ Keep responses natural, conversational, and concise (2-4 sentences max).
 Do not use English unless the user speaks English to you."""
 
 
-class Predictor(BaseModel):
+class Predictor(BasePredictor):
     def setup(self):
         import ctranslate2
         from faster_whisper import WhisperModel

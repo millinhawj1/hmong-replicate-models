@@ -1,7 +1,7 @@
 import os, sys, tempfile
 import numpy as np
 import soundfile as sf
-from cog import BaseModel, Input
+from cog import BasePredictor, Input
 from pathlib import Path
 
 # CosyVoice app
@@ -31,7 +31,7 @@ VOICES = {
 }
 
 
-class Predictor(BaseModel):
+class Predictor(BasePredictor):
     def setup(self):
         import ctranslate2
         from faster_whisper import WhisperModel

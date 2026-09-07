@@ -7,7 +7,7 @@ if str(COSY_APP) not in sys.path:
     sys.path.insert(0, str(COSY_APP))
 
 import soundfile as sf
-from cog import BaseModel, Input
+from cog import BasePredictor, Input
 from pathlib import Path, Secret
 from tts_core import CosyVoiceEngine
 
@@ -40,7 +40,7 @@ VOICES = {
 }
 
 
-class Predictor(BaseModel):
+class Predictor(BasePredictor):
     def setup(self):
         self.engine = CosyVoiceEngine(
             model_dir=MODEL_DIR,

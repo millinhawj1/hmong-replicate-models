@@ -2,7 +2,7 @@ import os, sys, uuid, tempfile
 import numpy as np
 import torch
 import soundfile as sf
-from cog import BaseModel, Input
+from cog import BasePredictor, Input
 from pathlib import Path, Secret
 from pathlib import Path as SysPath
 
@@ -14,7 +14,7 @@ DEV = torch.device("cuda")
 DT  = torch.float16
 
 
-class Predictor(BaseModel):
+class Predictor(BasePredictor):
     def setup(self):
         from hydra.utils import instantiate
         from omegaconf import DictConfig

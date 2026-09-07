@@ -8,7 +8,7 @@ if str(COSY_APP) not in sys.path:
 
 import numpy as np
 import soundfile as sf
-from cog import BaseModel, Input
+from cog import BasePredictor, Input
 from tts_core import CosyVoiceEngine
 
 MODEL_DIR    = COSY_APP / "Fun-CosyVoice3-0.5B-hmong"
@@ -73,7 +73,7 @@ VOICES = {
 }
 
 
-class Predictor(BaseModel):
+class Predictor(BasePredictor):
     def setup(self):
         self.engine = CosyVoiceEngine(
             model_dir=MODEL_DIR,
