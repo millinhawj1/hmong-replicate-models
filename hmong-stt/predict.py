@@ -41,7 +41,7 @@ class Predictor(BasePredictor):
 
     def run(
         self,
-        audio: CogPath = Input(description="Hmong audio to transcribe (wav/mp3/m4a)"),
+        audio: Path = Input(description="Hmong audio to transcribe (wav/mp3/m4a)"),
         dialect: str = Input(
             description="Dialect hint (both models are the same Pakorn multi-speech model)",
             default="dawb",

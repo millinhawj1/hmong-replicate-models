@@ -30,10 +30,10 @@ class Predictor(BasePredictor):
 
     def run(
         self,
-        source_audio: CogPath = Input(
+        source_audio: Path = Input(
             description="Audio to convert — the speech you want cloned into the target voice (wav/mp3)"
         ),
-        reference_audio: CogPath = Input(
+        reference_audio: Path = Input(
             description="3–10 second reference clip of the target voice (wav/mp3)"
         ),
         diffusion_steps: int = Input(

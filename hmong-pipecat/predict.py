@@ -56,7 +56,7 @@ class Predictor(BasePredictor):
 
     def run(
         self,
-        audio: CogPath = Input(description="User's spoken Hmong audio (wav/mp3)"),
+        audio: Path = Input(description="User's spoken Hmong audio (wav/mp3)"),
         voice: str = Input(
             description="AI assistant voice",
             default="Ntshiab_Li",

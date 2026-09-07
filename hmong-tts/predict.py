@@ -9,7 +9,6 @@ if str(COSY_APP) not in sys.path:
 import numpy as np
 import soundfile as sf
 from cog import BasePredictor, Input
-from pathlib import Path
 from tts_core import CosyVoiceEngine
 
 MODEL_DIR    = COSY_APP / "Fun-CosyVoice3-0.5B-hmong"

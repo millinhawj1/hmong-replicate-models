@@ -52,7 +52,7 @@ class Predictor(BasePredictor):
 
     def run(
         self,
-        image: CogPath = Input(description="Portrait photo (jpg/png) — face must be clearly visible"),
+        image: Path = Input(description="Portrait photo (jpg/png) — face must be clearly visible"),
         text: str = Input(description="Hmong text to speak"),
         voice: str = Input(
             description="Speaker voice",

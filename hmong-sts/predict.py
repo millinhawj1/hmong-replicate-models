@@ -50,7 +50,7 @@ class Predictor(BasePredictor):
 
     def run(
         self,
-        audio: CogPath = Input(description="Hmong speech audio to convert (wav/mp3)"),
+        audio: Path = Input(description="Hmong speech audio to convert (wav/mp3)"),
         target_voice: str = Input(
             description="Target voice to speak in",
             default="Kim_tshaj",
