@@ -69,7 +69,7 @@ output = replicate.run(
 
 ## Pricing
 
-**$0.40 per run** — competitive with ElevenLabs ($0.30–1.00/clone) and significantly cheaper than custom fine-tuning solutions.
+**$0.059 per run** — matches OpenVoice pricing. Seed-VC V2 delivers significantly better quality, especially for tonal Asian languages.
 
 ## About
 

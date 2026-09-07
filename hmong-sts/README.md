@@ -38,7 +38,7 @@ WAV audio of the same speech in the target voice.
 
 ## Pricing
 
-**$0.08 per run** — unique on Replicate. No other model does Hmong speech-to-speech.
+**$0.059 per run** — matches OpenVoice pricing. The only Hmong STS on Replicate.
 
 ## About
 

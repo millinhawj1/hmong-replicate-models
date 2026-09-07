@@ -24,7 +24,7 @@ Transcribed Hmong text in RPA spelling.
 
 ## Pricing
 
-**$0.05 per run** — the only Hmong STT on Replicate at any price.
+**$0.010 per run** — matches Whisper pricing. The only Hmong STT on Replicate.
 
 ## About
 
