@@ -1,0 +1,88 @@
+import sys, io, tempfile
+from pathlib import Path
+
+# CosyVoice app lives here on the pod
+COSY_APP = Path("/workspace/cosyvoice_app/app")
+if str(COSY_APP) not in sys.path:
+    sys.path.insert(0, str(COSY_APP))
+
+import numpy as np
+import soundfile as sf
+from cog import BasePredictor, Input, Path as CogPath
+from tts_core import CosyVoiceEngine
+
+MODEL_DIR    = COSY_APP / "Fun-CosyVoice3-0.5B-hmong"
+COSY_DIR     = COSY_APP / "CosyVoice"
+REF_AUDIO    = COSY_APP / "ref_audio"
+
+# Mirror of VOICE_CATALOG in api.py
+# 4 voices from Pakorn: 2 male (Dawb + Leeg), 2 female (Dawb + Leeg)
+VOICES = {
+    "Kim_tshaj": {
+        "name":    "Kim Tshaj (Male · Dawb)",
+        "ref":     str(REF_AUDIO / "Kim_tshaj.mp3"),
+        "instruct":"You are a helpful assistant. Please speak Hmong (White Hmong RPA).<|endofprompt|>",
+    },
+    "txeej_txaim": {
+        "name":    "Txeej Txaim (Male · Leeg)",
+        "ref":     str(REF_AUDIO / "txeej_txaim.mp3"),
+        "instruct":"You are a helpful assistant. Please speak Hmong (Green Hmong RPA).<|endofprompt|>",
+    },
+    "Ntshiab_Li": {
+        "name":    "Ntshiab Li (Female · Dawb)",
+        "ref":     str(REF_AUDIO / "Ntshiab_Li.mp3"),
+        "instruct":"You are a helpful assistant. Please speak Hmong (White Hmong RPA).<|endofprompt|>",
+    },
+    "Kaj_Siab": {
+        "name":    "Kaj Siab (Female · Leeg)",
+        "ref":     str(REF_AUDIO / "Kaj_Siab.mp3"),
+        "instruct":"You are a helpful assistant. Please speak Hmong (Green Hmong RPA).<|endofprompt|>",
+    },
+}
+
+
+class Predictor(BasePredictor):
+    def setup(self):
+        self.engine = CosyVoiceEngine(
+            model_dir=MODEL_DIR,
+            cosyvoice_dir=COSY_DIR,
+            fp16=True,
+        )
+        print("CosyVoice loaded ✓", flush=True)
+
+    def predict(
+        self,
+        text: str = Input(description="Hmong text to synthesize"),
+        voice: str = Input(
+            description="Speaker voice",
+            default="Kim_tshaj",
+            choices=list(VOICES.keys()),
+        ),
+        speed: float = Input(
+            description="Speaking speed (0.5–2.0)", default=1.0, ge=0.5, le=2.0
+        ),
+        seed: int = Input(
+            description="Random seed for reproducibility (-1 = random)",
+            default=0, ge=-1, le=2_147_483_647,
+        ),
+    ) -> CogPath:
+        text = text.strip()
+        if not text:
+            raise ValueError("text is required")
+
+        spec = VOICES[voice]
+
+        sample_rate, wav = self.engine.synthesize(
+            tts_text=text,
+            mode="Instruct2",
+            prompt_wav=spec["ref"],
+            prompt_text="",
+            instruct_text=spec["instruct"],
+            text_frontend=False,
+            speed=speed,
+            seed=seed,
+        )
+
+        out = CogPath(tempfile.mktemp(suffix=".wav"))
+        sf.write(str(out), wav, sample_rate, subtype="PCM_16")
+        return out
