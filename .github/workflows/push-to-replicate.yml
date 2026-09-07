@@ -20,6 +20,9 @@ jobs:
           - hmong-talking-avatar
           - hmong-singing-avatar
           - hmong-voice-clone
+          - hmong-stt
+          - hmong-sts
+          - hmong-pipecat
       fail-fast: false
 
     steps:
