@@ -1,0 +1,6 @@
+faster-whisper
+ctranslate2
+soundfile
+numpy
+huggingface_hub
+transformers
